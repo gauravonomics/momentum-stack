@@ -83,6 +83,21 @@ The vault contains 26 entity types. Each has a defined schema with required and 
 
 All frontmatter uses YAML format between `---` delimiters at the top of a Markdown file.
 
+### Field Type Reference
+
+| Type | Format | Example |
+|------|--------|---------|
+| `string` | Plain text | `"Build a knowledge system"` |
+| `date` | ISO date, optionally with time | `2026-01-15` or `"2026-01-15 09:30 IST"` |
+| `number` | Integer or decimal | `1`, `0.5` |
+| `link` | Wikilink to another entity file | `"[[goal-build-knowledge-system]]"` |
+| `array` | YAML list. Items may be strings, links, or objects depending on field. | `["tag-a", "tag-b"]` or `["[[goal-1]]", "[[goal-2]]"]` |
+| `wikilink` | Same as `link` -- alternate name used in some schemas | `"[[learning-growth]]"` |
+
+**Link resolution:** Links use the `[[filename]]` format where `filename` is the target file's name without path or extension. Agents resolve links by searching for the matching file across all vault directories.
+
+**File naming convention:** All vault files use kebab-case (lowercase, numbers, hyphens). Example: `compound-knowledge-systems.md`, `goal-build-knowledge-system.md`.
+
 ---
 
 ### 2.1 Area
@@ -230,7 +245,7 @@ A compiled meeting transcript with entity linking. Created by a transcript proce
 |-------|------|-------------|
 | created | date | Date of the meeting |
 | type | string | Always `meeting-transcript` |
-| source | string | Source tool (e.g., `granola`) |
+| source | string | Source tool (e.g., `transcript-tool`) |
 
 **Optional fields:**
 
@@ -490,9 +505,10 @@ A single atomic insight -- one idea per note. The core knowledge unit of the zet
 | signal | string | *Synthesis:* evergreen status and connection strength |
 | essay_potential | string | *Synthesis:* readiness for essay conversion |
 | linked_essays | array | Links to essay ideas that use this note |
+| source_lineage | link | Link to the raw source file this note was derived from. Checked by lint (see Section 8.5). |
 | relations | array | Typed semantic relations (see Section 4) |
 
-**Validation:** Title must express one idea clearly (zettelkasten principle). Body must contain a Links section with at least one link (no orphan notes). Synthesis fields are written by weekly review.
+**Validation:** Title must express one idea clearly (zettelkasten principle). Body must contain a Links section with at least one link (no orphan notes). Synthesis fields are written by weekly review. Notes lacking `source_lineage` or a `derived_from` relation are flagged by lint.
 
 **Common relations:** `supports` (note supports a claim in another note), `contradicts` (opposing claim), `derived_from` (extracted from literature note or meeting), `references` (cites another note)
 
@@ -1442,7 +1458,7 @@ Each ritual feeds the next level. Daily plans accumulate evidence that weekly re
 
 ## 8. Lint Defect Categories
 
-The vault maintains a gaps backlog where structural defects are tracked. Five defect categories are detected by lint processes and routed for resolution.
+The vault maintains a gaps backlog where structural defects are tracked. Six defect categories are detected by lint processes and routed for resolution.
 
 ### 8.1 Contradictions
 
@@ -1483,6 +1499,14 @@ The vault maintains a gaps backlog where structural defects are tracked. Five de
 **Resolution:** Trace the note back to its raw source and populate the `source_lineage` field. If the raw source cannot be found, document this in the note and flag for manual review.
 
 **Severity:** High. Broken lineage means a claim cannot be verified against its origin.
+
+### 8.6 Relation Integrity
+
+**Detection:** Entities with `relations` entries whose target does not exist, whose `type` is not one of the 8 defined relation types, or whose `evidence` field is empty or missing.
+
+**Resolution:** Fix the relation entry -- update the target to point to an existing file, correct the type to a valid relation type, or add the missing evidence sentence.
+
+**Severity:** Medium. Invalid relations produce noise in the graph and cause lint failures during bilateral consistency checks.
 
 ---
 

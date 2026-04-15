@@ -1,7 +1,7 @@
 ---
 created: 2026-01-15
 type: meeting-transcript
-source: granola
+source: transcript-tool
 people:
   - "[[alex-chen]]"
 projects:
