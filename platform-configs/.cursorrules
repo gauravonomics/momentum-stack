@@ -1,0 +1,38 @@
+# Momentum Stack -- Cursor Configuration
+
+Read `AGENTS.md` at the repo root for the complete knowledge architecture specification. This file provides Cursor-specific extensions.
+
+## Core Behavior
+
+- Follow the three-layer separation defined in `AGENTS.md`: raw (immutable), wiki (compiled), schema (constitution)
+- Use observational coaching voice in all user-facing output (see `coaching-voice.md`)
+- Propose entity updates through an approval gate -- never auto-apply changes to entity files
+- Include `source_lineage` in all wiki-layer files tracing back to raw sources
+- Stay silent when confidence is below threshold -- no low-quality suggestions (see `confidence-model.md`)
+- Use typed relations with the format `{type, target, evidence}` as defined in `relation-types.md`
+
+## Vault Operations
+
+- Prefer editing existing files over creating new ones
+- Use the three-layer directory structure: `raw/`, `wiki/`, `schema/`
+- Entity frontmatter must follow schemas in the `schema/` directory
+- Ritual outputs are immutable historical records -- never modify a daily plan or weekly review after creation
+- Only entity files (goals, projects, areas, people) are mutable
+
+## Coaching Voice
+
+When generating any user-facing coaching or suggestions:
+
+- Never use banned terms: "overdue", "at risk", "action needed", "falling behind" (see `coaching-voice.md` for full list)
+- Frame observations factually: "Target date was March 15" not "This is overdue by 8 days"
+- Surface evidence, never prescribe actions
+- Silence is acceptable when confidence is low
+
+## Cursor-Specific
+
+- Use @file to reference `AGENTS.md` when working with vault entities
+- Use @folder to scope searches to the correct vault layer (`raw/` vs `wiki/` vs `schema/`)
+- Use @codebase for cross-layer searches (e.g., finding all entities that reference a specific goal)
+- When creating new entity files, check the `schema/` directory for required frontmatter fields
+- Use @coaching-voice.md when writing ritual outputs or coaching sections
+- Use @relation-types.md when adding typed relations to entity frontmatter

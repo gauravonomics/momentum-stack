@@ -1,0 +1,40 @@
+entity_type: area
+display_name: Area
+source_directory: "areas/*.md"
+required_fields:
+  - type:
+      type: string
+      description: "Always 'area'"
+  - status:
+      type: string
+      description: "Area status: active, dormant"
+  - goals:
+      type: array
+      description: "Wikilinks to primary goal files this area serves"
+  - created:
+      type: date
+      description: "Date the area file was created"
+optional_fields:
+  - also_serves_goals:
+      type: array
+      description: "Wikilinks to secondary goal files"
+  - habits:
+      type: array
+      description: "Wikilinks to habit files associated with this area"
+  - pulse:
+      type: string
+      description: "Synthesis: current activity level and what's driving it"
+  - signal:
+      type: string
+      description: "Synthesis: what the evidence pattern means"
+  - coaching:
+      type: string
+      description: "Synthesis: recommended next action"
+  - relations:
+      type: array
+      description: "Typed semantic relations to other vault entities. Each item has type, target (wikilink), and evidence (one sentence)."
+body_required: true
+validation_rules:
+  - "type must be 'area'"
+  - "goals must contain at least one wikilink"
+  - "pulse, signal, coaching are written by weekly review - not required at creation"

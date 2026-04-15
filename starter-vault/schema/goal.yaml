@@ -1,0 +1,53 @@
+entity_type: goal
+display_name: Goal
+source_directory: "goals/goal-*.md"
+required_fields:
+  - title:
+      type: string
+      description: "Human-readable goal name"
+  - goal_number:
+      type: number
+      description: "Goal number (1-6)"
+  - quarter:
+      type: string
+      description: "Quarter this goal belongs to, e.g. 'Q1 2026'"
+  - objective:
+      type: string
+      description: "One-sentence description of what achieving this goal means"
+  - status:
+      type: string
+      description: "Goal status: in-progress, complete, deferred"
+  - priority:
+      type: number
+      description: "Priority rank (1 = highest priority)"
+  - deadline:
+      type: date
+      description: "Quarter-end deadline"
+  - created:
+      type: date
+      description: "Date the goal file was created"
+  - primary_area:
+      type: wikilink
+      description: "Wikilink to the primary area this goal belongs to"
+optional_fields:
+  - also_serves:
+      type: array
+      description: "Wikilinks to secondary areas this goal also serves"
+  - evidence:
+      type: string
+      description: "Synthesis: factual evidence of progress"
+  - signal:
+      type: string
+      description: "Synthesis: what the evidence pattern means"
+  - coaching:
+      type: string
+      description: "Synthesis: recommended next action"
+  - relations:
+      type: array
+      description: "Typed semantic relations to other vault entities. Each item has type, target (wikilink), and evidence (one sentence)."
+body_required: true
+validation_rules:
+  - "goal_number must be between 1 and 6"
+  - "priority must be between 1 and 6"
+  - "status must be one of: in-progress, complete, deferred"
+  - "evidence, signal, coaching are written by weekly review - not required at creation"

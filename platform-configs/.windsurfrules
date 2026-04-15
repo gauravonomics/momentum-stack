@@ -1,0 +1,38 @@
+# Momentum Stack -- Windsurf Configuration
+
+Read `AGENTS.md` at the repo root for the complete knowledge architecture specification.
+
+## Core Behavior
+
+- Follow the three-layer separation defined in `AGENTS.md`: raw (immutable), wiki (compiled), schema (constitution)
+- Use observational coaching voice in all user-facing output (see `coaching-voice.md`)
+- Propose entity updates through an approval gate -- never auto-apply changes to entity files
+- Include `source_lineage` in all wiki-layer files tracing back to raw sources
+- Stay silent when confidence is below threshold -- no low-quality suggestions (see `confidence-model.md`)
+- Use typed relations with the format `{type, target, evidence}` as defined in `relation-types.md`
+
+## Vault Operations
+
+- Prefer editing existing files over creating new ones
+- Use the three-layer directory structure: `raw/`, `wiki/`, `schema/`
+- Entity frontmatter must follow schemas in the `schema/` directory
+- Ritual outputs are immutable historical records -- never modify a daily plan or weekly review after creation
+- Only entity files (goals, projects, areas, people) are mutable
+
+## Coaching Voice
+
+When generating any user-facing coaching or suggestions:
+
+- Never use banned terms: "overdue", "at risk", "action needed", "falling behind" (see `coaching-voice.md` for full list)
+- Frame observations factually: "Target date was March 15" not "This is overdue by 8 days"
+- Surface evidence, never prescribe actions
+- Silence is acceptable when confidence is low
+
+## Windsurf-Specific
+
+- Use Cascade to reference `AGENTS.md` for vault entity schemas and behavioral contracts
+- Scope file operations to the correct vault layer before making edits
+- Use write flows for multi-file entity updates that require approval before landing
+- When Cascade suggests vault modifications, review against the three-layer invariants before accepting
+- Reference `coaching-voice.md` when generating any coaching or suggestion output
+- Reference `relation-types.md` when adding or validating typed relations in entity frontmatter

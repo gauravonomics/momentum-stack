@@ -1,0 +1,40 @@
+# Typed Semantic Graph - Relation Types
+# 8 core relation types for the Momentum vault.
+# Any entity can declare typed relations to any other entity.
+# Used by: vault-lint (bilateral checks, dangling targets, contradiction concentration),
+#          validate-frontmatter.sh (type enum validation),
+#          ingestion skills (relation extraction guidance).
+
+relation_types:
+  - name: contradicts
+    description: "Source A and source B make opposing claims about the same subject"
+    bilateral: true
+    lint_priority: high
+  - name: supersedes
+    description: "Source A replaces or updates source B (B is now outdated)"
+    bilateral: false
+    lint_priority: medium
+  - name: supports
+    description: "Source A provides evidence for a claim in source B"
+    bilateral: false
+    lint_priority: low
+  - name: references
+    description: "Source A mentions or cites source B"
+    bilateral: false
+    lint_priority: low
+  - name: causes
+    description: "Event or decision in source A led to outcome in source B"
+    bilateral: false
+    lint_priority: medium
+  - name: trades_off
+    description: "Source A identifies a trade-off with what source B recommends"
+    bilateral: true
+    lint_priority: medium
+  - name: implements
+    description: "Source A is the implementation of the design described in source B"
+    bilateral: false
+    lint_priority: low
+  - name: derived_from
+    description: "Source A was synthesized or compiled from source B (raw source)"
+    bilateral: false
+    lint_priority: low
